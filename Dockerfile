@@ -11,14 +11,12 @@ RUN apk add --no-cache \
     libffi-dev \
     openssl-dev \
     curl \
-    unzip
+    unzip \
+    deno
 
-# Install Deno
-ENV DENO_INSTALL=/root/.deno
-ENV PATH=/root/.deno/bin:$PATH
+ENV PATH="/root/.deno/bin:$PATH"
 
-RUN curl -fsSL https://deno.land/install.sh | sh && \
-    /root/.deno/bin/deno --version
+RUN deno --version
 
 COPY requirements.txt .
 
@@ -29,6 +27,7 @@ COPY . .
 
 RUN yt-dlp --version && \
     ffmpeg -version && \
-    python3 -m pip check
+    python3 -m pip check && \
+    deno --version
 
 CMD ["python3", "bot.py"]
